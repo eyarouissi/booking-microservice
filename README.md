@@ -30,7 +30,7 @@ You also need to start your mongodb instance.
 
 The starter listens on port 8000 on address [0.0.0.0](0.0.0.0:8080). 
 
-![FastAPI-MongoDB starter](https://res.cloudinary.com/adeshina/image/upload/v1600180509/fopab9idhrjqeqds4izk.png)
+![FastAPI-MongoDB starter]()
 
 
 ## Contributing ?
