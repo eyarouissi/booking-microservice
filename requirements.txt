@@ -7,3 +7,5 @@ python-decouple
 fastapi
 pydantic[email]
 passlib
+pytz
+dateutil.parser
