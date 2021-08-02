@@ -10,8 +10,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import  pymongo
 import asyncio
 import re
-import dateutil.parser
-import pytz
 router = APIRouter()
 
 
@@ -41,20 +39,13 @@ async def receive_booking( employee : dict):
         match_start = re.search(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z', start_time)
         match_end = re.search(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z', end_time)
         start_date = datetime.strptime(match_start.group(), "%Y-%m-%dT%H:%M:%SZ").isoformat()
-        date_time_obj = dateutil.parser.parse(start_date)
-        time_zone = re.search(r'(\w+)(/)(\w+)', start_time).group(0)
-        local_time = pytz.timezone(time_zone)
-        naive_datetime = datetime.strptime (str(date_time_obj), "%Y-%m-%d %H:%M:%S")
-        local_datetime = local_time.localize(naive_datetime, is_dst=None)
-        utc_datetime = local_datetime.astimezone(pytz.utc)
-        final_date=utc_datetime.isoformat()   
-        date = datetime.strptime(final_date.split('+')[0], "%Y-%m-%dT%H:%M:%S")   
+         
         doc = list ( Projects_collection.find({ "project_code" : code, "Employees.email"  : email}))
         if doc==[] :
             return ErrorResponseModel("An error occured.", 404, " Email is not available in the Employees")
         else:
             Projects_collection.update_one({ "project_code" : code, "Employees.email"  : email },
-            {"$set" : {"Employees.$.scheduled_session"  : date }},True )
+            {"$set" : {"Employees.$.scheduled_session"  : start_date }},True )
       
             return ResponseModel("the data of this employee who booked : {} is updated successfully".format(Employee), "Project updated successfully") \
         
