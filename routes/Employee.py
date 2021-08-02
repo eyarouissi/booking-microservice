@@ -42,8 +42,8 @@ async def receive_booking( employee : dict):
         match_end = re.search(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z', end_time)
         start_date = datetime.strptime(match_start.group(), "%Y-%m-%dT%H:%M:%SZ").isoformat()
         date_time_obj = dateutil.parser.parse(start_date)
-       
-        local_time = pytz.timezone("Asia/Dubai")
+        time_zone = re.search(r'(\w+)(/)(\w+)', start_time).group(0)
+        local_time = pytz.timezone(time_zone)
         naive_datetime = datetime.strptime (str(date_time_obj), "%Y-%m-%d %H:%M:%S")
         local_datetime = local_time.localize(naive_datetime, is_dst=None)
         utc_datetime = local_datetime.astimezone(pytz.utc)
