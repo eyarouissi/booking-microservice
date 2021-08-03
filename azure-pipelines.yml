@@ -8,6 +8,8 @@ trigger:
 resources:
 - repo: self
 
+pool: "dockerized-vsts-agents"
+
 variables:
   tag: '$(Build.BuildId)'
 
